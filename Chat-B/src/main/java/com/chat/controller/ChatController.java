@@ -1,4 +1,4 @@
-package com.chat.controlle;
+package com.chat.controller;
 
 import com.chat.model.Message;
 import com.chat.repository.MessageRepository;
