@@ -8,13 +8,16 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
+@CrossOrigin
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -35,6 +38,7 @@ public class ChatController {
         return messageRepository.save(message);
     }
 
+    @ResponseBody
     @GetMapping("/history")
     public List<Message> getChatHistory() {
         return messageRepository.findAllByOrderByTimestampDesc();

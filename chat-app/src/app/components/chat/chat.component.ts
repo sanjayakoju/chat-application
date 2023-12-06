@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ChatMessage } from 'src/app/models/chat-message';
-import { ChatService } from 'src/app/services/chat.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ChatMessage} from 'src/app/models/chat-message';
+import {ChatService} from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -15,15 +15,14 @@ export class ChatComponent implements OnInit {
   messageList: any[] = [];
 
   constructor(private chatService: ChatService,
-    private route: ActivatedRoute
-    ){
-
+              private route: ActivatedRoute){
   }
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.params["userId"];
     this.chatService.joinRoom("ABC");
-    this.lisenerMessage();
+    this.listenerMessage();
+    this.chatHistory();
   }
 
   sendMessage() {
@@ -35,12 +34,20 @@ export class ChatComponent implements OnInit {
     this.messageInput = '';
   }
 
-  lisenerMessage() {
+  listenerMessage() {
     this.chatService.getMessageSubject().subscribe((messages: any) => {
       this.messageList = messages.map((item: any)=> ({
         ...item,
         message_side: item.user === this.userId ? 'sender': 'receiver'
       }))
     });
+  }
+
+  chatHistory() {
+    this.chatService.getChatHistory().subscribe( res => {
+      console.log('Chat History: ', res)
+    }, err => {
+      console.log('Error : ',err)
+    })
   }
 }
