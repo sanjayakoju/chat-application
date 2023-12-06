@@ -31,7 +31,7 @@ public class ChatController {
     public Message sendMessage(@PathVariable String roomId, @Payload Message message) {
         message.setTimestamp(LocalDateTime.now());
         System.out.println("Message : "+message);
-        messagingTemplate.convertAndSend("/topic/{roomId}", message);
+        messagingTemplate.convertAndSend("/topic/" + roomId, message);
         return messageRepository.save(message);
     }
 
